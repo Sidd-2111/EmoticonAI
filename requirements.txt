@@ -20,20 +20,6 @@ pillow>=11.0.0,<12.0.0
 requests>=2.28.0,<3.0.0
 python-dateutil==2.9.0.post0
 
-# ML/AI Core
-torch==2.7.1
-torchvision==0.22.1
-torchaudio==2.7.1
-transformers==4.53.1
-huggingface-hub==0.33.1
-tokenizers==0.21.2
-safetensors==0.5.3
-
-# TensorFlow
-tensorflow==2.17.0
-tf-keras==2.17.0
-keras==3.10.0
-
 # Computer Vision
 opencv-python==4.11.0.86
 opencv-contrib-python==4.11.0.86
@@ -41,10 +27,6 @@ facenet-pytorch==2.5.3
 mtcnn==1.0.0
 deepface==0.0.93
 retina-face==0.0.17
-
-# Image Processing
-scikit-image==0.25.2
-imageio==2.37.0
 
 # Scientific Computing
 scipy>=1.10.0,<2.0.0
@@ -80,9 +62,6 @@ ultralytics==8.3.159
 # Development tools (optional - remove for production)
 colorama==0.4.6; sys_platform == "win32"
 
-# Kaggle (if needed)
-kaggle==1.7.4.5
-kagglehub==0.3.12
 
 # All other dependencies
 absl-py==2.3.0
@@ -255,4 +234,5 @@ widgetsnbextension==4.0.14
 wrapt==1.17.2
 xxhash==3.5.0
 yarl==1.20.1
+
 
