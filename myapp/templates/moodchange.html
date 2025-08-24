@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoticon - Mood Rescue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: radial-gradient(circle at 20% 80%, #0a0a0a 0%, #1a1a2e 40%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Navigation Styles - Consistent with journal.html */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 15px 40px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            width: 98%;
+            max-width: 1100px;
+            box-shadow: none;
+        }
+
+        nav:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff4081;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 45px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 12px 28px;
+            border-radius: 25px;
+            background: transparent;
+            min-width: 110px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 64, 129, 0.2);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff4081, #64b5f6);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 20px auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+        
+        .panel:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) scale(1.1);
+        }
+        
+        .panel:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.2);
+            border-color: rgba(255, 64, 129, 0.3);
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        .page-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Button Styles */
+        .btn {
+            min-width: 140px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            color: #fff;
+            font-family: 'Exo 2', sans-serif;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 64, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 64, 129, 0.5);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 64, 129, 0.1);
+            border-color: rgba(255, 64, 129, 0.8);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 64, 129, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* View Animation */
+        .view {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Emotion Selection Grid */
+        #emotion-selection-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .emotion-card {
+            text-align: center;
+            padding: 30px;
+            cursor: pointer;
+        }
+        .emotion-card .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+        .emotion-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            color: #64b5f6;
+        }
+
+        /* Roadmap Selection */
+        .roadmap-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .roadmap-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .roadmap-card {
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .roadmap-card-content h4 {
+            font-size: 1.5rem;
+            color: #ff4081;
+            margin-bottom: 10px;
+        }
+        .roadmap-card-content ul {
+            list-style: none;
+            padding-left: 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .roadmap-card-content li::before {
+            content: '✓';
+            color: #64b5f6;
+            margin-right: 10px;
+        }
+        
+        /* Task View */
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .task-item:hover {
+            border-color: #64b5f6;
+        }
+        .task-item input[type="checkbox"] {
+            display: none;
+        }
+        .task-item label {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .custom-checkbox {
+            width: 25px;
+            height: 25px;
+            border: 2px solid #64b5f6;
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .custom-checkbox i {
+            font-size: 1rem;
+            color: white;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+        .task-item input[type="checkbox"]:checked + label .custom-checkbox {
+            background: #64b5f6;
+            border-color: #64b5f6;
+        }
+        .task-item input[type="checkbox"]:checked + label .custom-checkbox i {
+            transform: scale(1);
+        }
+        .task-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .task-completion-actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Reward View */
+        #reward-view .panel {
+            text-align: center;
+        }
+        .reward-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: rewardPulse 2s infinite;
+        }
+        @keyframes rewardPulse { 
+            0%, 100% { transform: scale(1); } 
+            50% { transform: scale(1.1); } 
+        }
+        .reward-message {
+            font-size: 1.5rem;
+            color: #ff4081;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 10;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            nav {
+                max-width: 98vw;
+                padding: 10px 8px;
+            }
+            .nav-links {
+                gap: 18px;
+            }
+            nav a, .btn {
+                min-width: 80px;
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+            .roadmap-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .roadmap-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #64b5f6, #1976d2);
+        }
+    </style>
+</head>
+<body>
+   <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <span class="logo-text">EMOTICON</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{% url 'myapp:dashboard' %}" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:journal' %}" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        <span>Journal</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:profile' %}" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:moodchange' %}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Mood Status</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:logout' %}" class="nav-link logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container" id="moodRescueContainer">
+            <!-- All views will be dynamically rendered here -->
+        </div>
+    </main>
+
+    <!-- Footer - Consistent with journal.html -->
+            <footer>
+        <p>Emoticon Project &copy; 2025 | AI Emotional Companion for Mental Wellness</p>
+        <p>Made with &hearts;</p>
+    </footer>
+
+    <script>
+        const moodData = {
+            sad: {
+                displayName: 'Sad',
+                icon: '😢',
+                roadmaps: [
+                    { name: 'Calm & Soothe', reward: '🌙 "You have taken a step towards peace."', tasks: ['Deep breathing (1 min guided)', 'Listen to a calming soundscape (rain, ocean)', 'Write down 1 safe place/person that makes you feel comforted'] },
+                    { name: 'Express & Release', reward: '✨ "Expressing is healing."', tasks: ['Journal prompt: "Why do I feel sad right now?"', 'Allow yourself 2 mins to cry/vent (yes, it is valid)', 'Write 1 gratitude note'] },
+                    { name: 'Lift & Distract', reward: '🌈 "Sadness shifted into light."', tasks: ['Quick physical activity (stretch/jump for 30 sec)', 'Chatbot "What If" fun scenario', 'Write 1 positive memory'] }
+                ]
+            },
+            angry: {
+                displayName: 'Angry',
+                icon: '😡',
+                roadmaps: [
+                    { name: 'Burn It Out', reward: '🔥 "You have transformed your fire into calm."', tasks: ['Shake arms & stomp feet for 10 secs', 'Breathing countdown (inhale 4, exhale 6)', 'Write what triggered anger then shred/delete'] },
+                    { name: 'Reframe It', reward: '⚖️ "Clarity brings balance."', tasks: ['Journal: "What is in my control vs not?"', 'Chatbot reframing: AI suggests 2 new perspectives', 'Gratitude prompt (write 1 good thing today)'] },
+                    { name: 'Cool Down', reward: '❄️ "Anger cooled, strength remains."', tasks: ['Play a 1-min calming video (nature clip)', 'Write 1 healthy response you could try next time', 'End with positive affirmation'] }
+                ]
+            },
+            anxious: {
+                displayName: 'Anxious',
+                icon: '😰',
+                roadmaps: [
+                    { name: 'Ground & Calm', reward: '🌱 "Calm roots are growing."', tasks: ['Guided box breathing', 'Touch 5 things you see (5-4-3-2-1 technique)', 'Journal: Write your 3 worries then rank importance'] },
+                    { name: 'Reassure & Reset', reward: '🕊 "Anxiety eased, clarity found."', tasks: ['Chatbot reassurance: "What is the worst that could happen vs what is likely?"', 'Replace negative thought with a neutral one', 'Listen to 2-min calming playlist'] },
+                    { name: 'Energize & Release', reward: '⚡ "Energy redirected."', tasks: ['Quick body shake/stretch', 'Write 1 productive step you can take today', 'Fun "What If" distraction scenario'] }
+                ]
+            },
+            stressed: {
+                displayName: 'Stressed',
+                icon: '😫',
+                roadmaps: [
+                    { name: 'Pause & Reset', reward: '💧 "Stress softened with clarity."', tasks: ['Breathing: inhale calm, exhale stress', 'Write down 3 tasks then pick just 1 to do now', 'Drink water or stretch break'] },
+                    { name: 'Organize & Focus', reward: '📌 "Stress untangled, focus sharpened."', tasks: ['List top 3 stressors', 'Break big task into 2 smaller ones', 'Journal: one thing you can control right now'] },
+                    { name: 'Relax & Recharge', reward: '🌙 "You have gifted yourself rest."', tasks: ['Guided relaxation (progressive muscle relax)', 'Fun "What If" question with chatbot', 'End with mindful gratitude'] }
+                ]
+            },
+            lonely: {
+                displayName: 'Lonely',
+                icon: '😔',
+                roadmaps: [
+                    { name: 'Connection Boost', reward: '💌 "Connection starts with small steps."', tasks: ['Write the name of one person you can reach out to', 'Send a quick positive message/text', 'Journal: "What do I wish someone would say to me? Write it."'] },
+                    { name: 'Self-Companionship', reward: '🌸 "You are your own best friend."', tasks: ['Listen to a guided meditation on self-love', 'Write 3 things you appreciate about yourself', 'Chatbot generates a compliment for you'] },
+                    { name: 'Distraction & Fun', reward: '🎉 "Loneliness eased by joy."', tasks: ['Quick mood-boosting activity (randomized suggestion: dance, doodle, sing)', 'Fun "What If" imagination game', 'Journal: "1 thing I would love to try when I meet new people."'] }
+                ]
+            },
+            happy: {
+                displayName: 'Happy',
+                icon: '😊',
+                roadmaps: [
+                    { name: 'Spread the Joy', reward: '🌟 "Happiness multiplies when shared."', tasks: ['Write 3 things making you happy', 'Share one with a friend', 'Do a quick dance/celebration'] },
+                    { name: 'Capture the Moment', reward: '📸 "Memory captured for rainy days."', tasks: ['Take a selfie or draw your happy face', 'Journal: Describe today in 3 words', 'Save this entry in your "Happiness Vault"'] }
+                ]
+            }
+        };
+
+        const container = document.getElementById('moodRescueContainer');
+
+        function renderEmotionSelection() {
+            container.innerHTML = `
+                <div class="page-header">
+                    <h1>Mood Rescue</h1>
+                    <p>How are you feeling right now? Choose an emotion to begin your journey.</p>
+                </div>
+                <div id="emotion-selection-view" class="view">
+                    ${Object.keys(moodData).map(key => `
+                        <div class="panel emotion-card" data-emotion="${key}">
+                            <div class="icon">${moodData[key].icon}</div>
+                            <h3>${moodData[key].displayName}</h3>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.querySelectorAll('.emotion-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    renderRoadmapSelection(card.dataset.emotion);
+                });
+            });
+        }
+
+        function renderRoadmapSelection(emotionKey) {
+            const emotion = moodData[emotionKey];
+            container.innerHTML = `
+                <div id="roadmap-selection-view" class="view">
+                    <div class="roadmap-header">
+                        <button id="back-to-emotions" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</button>
+                        <div class="page-header" style="margin-bottom: 0;">
+                            <h1>Feeling ${emotion.displayName}?</h1>
+                            <p>Choose a path to navigate this feeling and find your way to relief.</p>
+                        </div>
+                        <div></div> <!-- Spacer -->
+                    </div>
+                    <div class="roadmap-list">
+                        ${emotion.roadmaps.map((roadmap, index) => `
+                            <div class="panel roadmap-card">
+                                <div class="roadmap-card-content">
+                                    <h4>${roadmap.name}</h4>
+                                    <ul>
+                                        ${roadmap.tasks.map(task => `<li>${task}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <button class="btn btn-primary start-roadmap-btn" data-emotion="${emotionKey}" data-roadmap-index="${index}">
+                                    Start Journey <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('back-to-emotions').addEventListener('click', renderEmotionSelection);
+            
+            document.querySelectorAll('.start-roadmap-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    renderTaskView(button.dataset.emotion, button.dataset.roadmapIndex);
+                });
+            });
+        }
+
+        function renderTaskView(emotionKey, roadmapIndex) {
+            const roadmap = moodData[emotionKey].roadmaps[roadmapIndex];
+            container.innerHTML = `
+                <div id="task-view" class="view">
+                    <div class="page-header">
+                        <h1>${roadmap.name}</h1>
+                        <p>Complete each step on your journey to emotional wellness.</p>
+                    </div>
+                    <ul class="task-list">
+                        ${roadmap.tasks.map((task, index) => `
+                            <li class="task-item">
+                                <input type="checkbox" id="task-${index}" class="task-checkbox">
+                                <label for="task-${index}">
+                                    <span class="custom-checkbox"><i class="fas fa-check"></i></span>
+                                    ${task}
+                                </label>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <div class="task-completion-actions">
+                        <button id="complete-journey-btn" class="btn btn-primary" data-emotion="${emotionKey}" data-roadmap-index="${roadmapIndex}" disabled>
+                            <i class="fas fa-trophy"></i> Complete Journey
+                        </button>
+                        <button id="back-to-roadmaps" class="btn btn-secondary" data-emotion="${emotionKey}">
+                            <i class="fas fa-arrow-left"></i> Back to Roadmaps
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const completeBtn = document.getElementById('complete-journey-btn');
+            const backBtn = document.getElementById('back-to-roadmaps');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const allChecked = [...checkboxes].every(cb => cb.checked);
+                    completeBtn.disabled = !allChecked;
+                });
+            });
+
+            completeBtn.addEventListener('click', () => {
+                renderRewardView(completeBtn.dataset.emotion, completeBtn.dataset.roadmapIndex);
+            });
+
+            backBtn.addEventListener('click', () => {
+                renderRoadmapSelection(backBtn.dataset.emotion);
+            });
+        }
+
+        function renderRewardView(emotionKey, roadmapIndex) {
+            const roadmap = moodData[emotionKey].roadmaps[roadmapIndex];
+            const icon = roadmap.reward.split(' ')[0];
+            
+            container.innerHTML = `
+                <div id="reward-view" class="view">
+                    <div class="panel">
+                        <div class="reward-icon">${icon}</div>
+                        <h1>Journey Complete!</h1>
+                        <p class="reward-message">${roadmap.reward}</p>
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                            <button id="return-home-btn" class="btn btn-primary">
+                                <i class="fas fa-home"></i> New Journey
+                            </button>
+                            <a href="{% url 'myapp:dashboard' %}" class="btn btn-secondary">
+                                <i class="fas fa-chart-line"></i> Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('return-home-btn').addEventListener('click', renderEmotionSelection);
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', renderEmotionSelection);
+    </script>
+</body>
+</html>

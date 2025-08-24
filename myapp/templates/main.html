@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMOTICON - AI Emotional Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.51/build/spline-viewer.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: radial-gradient(circle at 20% 80%, #0a0a0a 0%, #1a1a2e 40%, #16213e 100%);
+      color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* NAV */
+    .nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 15px 40px;
+      z-index: 1000;
+      width: 98%;
+      max-width: 1100px;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ff4081;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .nav-links .btn {
+      padding: 8px 20px;
+      margin: 0;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: 10;
+      padding: 0 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      width: 100%;
+      gap: 50px;
+    }
+
+    /* Container for the 3D model */
+    .hero-left {
+      height: 450px;
+      min-height: 400px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+    }
+
+    .hero-left spline-viewer {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+    }
+
+    .hero-right {
+      text-align: left;
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 4rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #ff4081, #64b5f6, #1976d2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(255, 64, 129, 0.5);
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      margin: 0 0 30px;
+      color: #fff;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 15px;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #ff4081, #64b5f6);
+      color: #000;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #fff;
+      color: #fff;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Sections over background */
+    section {
+      position: relative;
+      z-index: 10;
+      padding: 100px 20px;
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    #features,
+    #contact {
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+    }
+
+    .features h2,
+    .contact h2 {
+      text-align: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      background: linear-gradient(45deg, #ff4081, #64b5f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .features-grid,
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card,
+    .contact-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card:hover,
+    .contact-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      border-color: rgba(255, 64, 129, 0.3);
+    }
+
+    .feature-icon,
+    .contact-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #ff4081, #64b5f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .feature-card h3,
+    .contact-card h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #ff4081;
+    }
+
+    .contact-card h3 {
+      color: #64b5f6;
+    }
+
+    .feature-card p,
+    .contact-card p {
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .contact-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      border: 2px solid rgba(255, 64, 129, 0.3);
+    }
+
+    /* Scroll Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero-left {
+        width: 100%;
+        height: 300px;
+        margin-bottom: 40px;
+      }
+
+      .hero-right {
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <div class="logo"><i class="fas fa-heartbeat"></i> EMOTICON</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="{% url 'myapp:login' %}" class="btn btn-primary">Login</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-container">
+      <div class="hero-left">
+        <!-- UPDATED: Using your confirmed URL -->
+        <spline-viewer url="https://prod.spline.design/ij3fqIg0NvHSNeGc/scene.splinecode"></spline-viewer>
+      </div>
+      <div class="hero-right">
+        <h1>EMOTICON</h1>
+        <p>Where intelligent systems meet emotional depth — because your mood matters in every moment. Experience the
+          future of AI-powered emotional companion technology.</p>
+        <div>
+          <a href="{% url 'myapp:login' %}" class="btn btn-primary">Get Started</a>
+          <a href="#contact" class="btn btn-outline">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features">
+    <h2>Revolutionary Features</h2>
+    <div class="features-grid">
+      <div class="feature-card fade-in">
+        <div class="feature-icon"><i class="fas fa-smile"></i></div>
+        <h3>Understands How You Feel</h3>
+        <p>Your face says it all our AI listens. Real-time emotion detection for smarter, more meaningful interactions
+          using advanced neural networks.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon"><i class="fas fa-user-friends"></i></div>
+        <h3>Interactions Made For You</h3>
+        <p>Whether you're feeling excited or calm, our AI tailors the experience to match your emotions and choices with
+          personalized responses.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon"><i class="fas fa-comments"></i></div>
+        <h3>Feedback in the Moment</h3>
+        <p>Live feedback on your mood and behavior, made simple. Get instant insights into your emotional patterns and
+          wellness metrics.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Connect With Us</h2>
+    <div class="contact-info">
+      <div class="contact-card fade-in">
+        <img src="https://robohash.org/emailRobot" alt="Email Robot">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <h3>Email</h3>
+        <p>contact@emoticon.ai</p>
+      </div>
+      <div class="contact-card fade-in">
+        <img src="https://robohash.org/phoneRobot" alt="Phone Robot">
+        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+        <h3>Phone</h3>
+        <p>+1 (123) 456-7890</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Emoticon Project © 2025 | AI Emotional Companion</p>
+  </footer>
+
+  <script>
+    // Scroll Animations
+    function animateOnScroll() {
+      const elements = document.querySelectorAll('.fade-in');
+
+      elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.classList.add('visible');
+        }
+      });
+    }
+
+    // Initialize
+    window.addEventListener('load', () => {
+      animateOnScroll();
+    });
+
+    window.addEventListener('scroll', animateOnScroll);
+  </script>
+  <!-- Emotion-based Chat Script -->
+  <script>
+    // Function to initialize emotion-based conversation
+    async function startEmotionChat() {
+      try {
+        const response = await fetch('/api/emotion-init/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+          }
+        });
+        const data = await response.json();
+        if (data.success) {
+          // Display the empathetic first message
+          addMessageToChat('ai', data.response);
+          // Show support resources if available
+          if (data.support_resources && data.support_resources.length > 0) {
+            showSupportResources(data.support_resources);
+          }
+        } else {
+          addMessageToChat('ai', data.response || 'Hello! How are you feeling today?');
+        }
+      } catch (error) {
+        console.error('Emotion init error:', error);
+        addMessageToChat('ai', 'Hello! I\'m here to help you today.');
+      }
+    }
+
+    // Function to send chat messages
+    async function sendMessage(message) {
+      try {
+        const response = await fetch('/api/chat/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+          },
+          body: JSON.stringify({ message: message })
+        });
+        const data = await response.json();
+        addMessageToChat('ai', data.response);
+      } catch (error) {
+        console.error('Chat error:', error);
+        addMessageToChat('ai', 'I\'m having trouble responding. Please try again.');
+      }
+    }
+
+    // Helper function to get CSRF token
+    function getCsrfToken() {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'csrftoken') return decodeURIComponent(value);
+      }
+      return '';
+    }
+
+    // Helper function to add messages to chat (customize based on your UI)
+    function addMessageToChat(sender, message) {
+      // Replace this with your actual chat UI update logic
+      const chatContainer = document.getElementById('chat-container');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${sender}`;
+      messageDiv.textContent = message;
+      chatContainer.appendChild(messageDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Optionally, function to show support resources (implement as needed)
+    function showSupportResources(resources) {
+      // Example: Display resources below chat
+      const chatContainer = document.getElementById('chat-container');
+      const resourcesDiv = document.createElement('div');
+      resourcesDiv.className = 'support-resources';
+      resourcesDiv.innerHTML = '<strong>Support Resources:</strong><ul>' +
+        resources.map(r => `<li>${r}</li>`).join('') + '</ul>';
+      chatContainer.appendChild(resourcesDiv);
+    }
+
+    // Initialize emotion chat when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      startEmotionChat();
+    });
+    // Update your existing message sending logic to use sendMessage()
+  </script>
+</body>
+
+</html>

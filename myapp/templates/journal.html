@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoticon - Journal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: radial-gradient(circle at 20% 80%, #0a0a0a 0%, #1a1a2e 40%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 15px 40px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            width: 98%;
+            max-width: 1100px;
+            box-shadow: none;
+        }
+
+        nav:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff4081;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 45px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 12px 28px;
+            border-radius: 25px;
+            background: transparent;
+            min-width: 110px;
+            text-align: center;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 64, 129, 0.2);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff4081, #64b5f6);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 20px auto;
+            padding: 20px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+        
+        .panel:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) scale(1.1);
+        }
+        
+        .panel:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.2);
+            border-color: rgba(255, 64, 129, 0.3);
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .panel-title i {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .journal-entry {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .journal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .journal-date {
+            font-weight: 600;
+            color: #64b5f6;
+        }
+
+        .journal-mood {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .journal-content {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .textbox-container {
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .textbox-label {
+            display: block;
+            color: #64b5f6;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        textarea, .journal-textbox {
+            width: 100%;
+            min-height: 180px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            color: #fff;
+            font-size: 1.1rem;
+            resize: vertical;
+            font-family: 'Exo 2', sans-serif;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus, .journal-textbox:focus {
+            outline: none;
+            border-color: #64b5f6;
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 20px rgba(100, 181, 246, 0.2);
+        }
+
+        textarea::placeholder, .journal-textbox::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        .char-counter {
+            text-align: right;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            min-width: 140px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            color: #000;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 64, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 64, 129, 0.5);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 64, 129, 0.1);
+            border-color: rgba(255, 64, 129, 0.8);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 64, 129, 0.2);
+        }
+
+        .btn-sm {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .journal-recent-title {
+            margin: 30px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .journal-recent-title i {
+            font-size: 2rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .writing-prompts {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #ff4081;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .writing-prompts h4 {
+            color: #ff4081;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prompt-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .prompt-tag {
+            background: rgba(255, 64, 129, 0.2);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 64, 129, 0.3);
+        }
+
+        .prompt-tag:hover {
+            background: rgba(255, 64, 129, 0.3);
+            border-color: #ff4081;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 10;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 900px) {
+            nav {
+                max-width: 98vw;
+                padding: 10px 8px;
+            }
+            .nav-links {
+                gap: 18px;
+            }
+            nav a, .btn {
+                min-width: 80px;
+                padding: 10px 10px;
+                font-size: 1rem;
+            }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #64b5f6, #1976d2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <span class="logo-text">EMOTICON</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{% url 'myapp:dashboard' %}" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:journal' %}" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        <span>Journal</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:profile' %}" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:moodchange' %}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Mood Status</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:logout' %}" class="nav-link logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+    <div class="container">
+        <div class="panel" id="journal-section-standalone">
+            <h2 class="panel-title"><i class="fas fa-book"></i> Daily Journal</h2>
+
+            <!-- New Journal Entry Form -->
+            <form method="post" class="journal-entry" id="journalForm">
+                {% csrf_token %}
+                <div class="journal-header">
+                    <div class="journal-date">New Entry for Today</div>
+                    <div class="journal-mood">
+                        <i class="fas fa-smile" style="color: var(--success);"></i>
+                        <span>How are you feeling?</span>
+                    </div>
+                </div>
+                
+                <!-- Writing Prompts -->
+                <div class="writing-prompts">
+                    <h4><i class="fas fa-lightbulb"></i> Need inspiration? Try these prompts:</h4>
+                    <div class="prompt-list">
+                        <span class="prompt-tag" onclick="insertPrompt('What made me smile today was...')">Daily Joy</span>
+                        <span class="prompt-tag" onclick="insertPrompt('I feel grateful for...')">Gratitude</span>
+                        <span class="prompt-tag" onclick="insertPrompt('Today I learned that...')">Learning</span>
+                        <span class="prompt-tag" onclick="insertPrompt('I am proud of myself for...')">Achievement</span>
+                        <span class="prompt-tag" onclick="insertPrompt('Tomorrow I want to...')">Goals</span>
+                    </div>
+                </div>
+
+                <div class="textbox-container">
+                    <label for="journalTextbox" class="textbox-label">
+                        <i class="fas fa-pen"></i> Write your thoughts...
+                    </label>
+                    {{ form.content }}
+                    {% if form.content.help_text %}
+                        <small class="helptext" style="display: block; text-align: left; margin-top: 5px;">{{ form.content.help_text }}</small>
+                    {% endif %}
+                    {% for error in form.content.errors %}
+                        <p class="errorlist" style="color: var(--danger); text-align: left; margin-top: 5px;">{{ error }}</p>
+                    {% endfor %}
+                    <div class="char-counter">
+                        <span id="charCount">0</span> / 5000 characters
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button type="submit" class="btn" id="saveBtn">
+                        <i class="fas fa-save"></i> Save Entry
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="clearTextbox()">
+                        <i class="fas fa-eraser"></i> Clear
+                    </button>
+                    
+                </div>
+            </form>
+
+            <h3 class="journal-recent-title">
+                <i class="fas fa-history"></i> Recent Entries
+            </h3>
+
+            {% for entry in journal_entries %}
+            <div class="journal-entry">
+                <div class="journal-header">
+                    <div class="journal-date">{{ entry.created_at|date:"F j, Y, P" }}</div>
+                    <!-- If you add mood to your JournalEntry model, display it here -->
+                    <!-- <div class="journal-mood">Mood: {{ entry.mood|default:"N/A" }}</div> -->
+                </div>
+                <div class="journal-content">
+                    <p>{{ entry.content|linebreaksbr }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <p>No journal entries found. Write your first entry above!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+        <p>Emoticon Project &copy; 2025 | AI Emotional Companion for Mental Wellness</p>
+        <p>Made with ❤️ </p>
+    </footer>
+
+    <script>
+        // Character counter functionality
+        function updateCharCounter() {
+            const textbox = document.getElementById('journalTextbox');
+            const counter = document.getElementById('charCount');
+            const currentLength = textbox.value.length;
+            counter.textContent = currentLength;
+            
+            // Change color based on character count
+            if (currentLength > 4500) {
+                counter.style.color = 'var(--danger)';
+            } else if (currentLength > 3500) {
+                counter.style.color = 'var(--warning)';
+            } else {
+                counter.style.color = 'var(--gray)';
+            }
+        }
+
+        // Clear textbox function
+        function clearTextbox() {
+            if (confirm('Are you sure you want to clear all text?')) {
+                document.getElementById('journalTextbox').value = '';
+                updateCharCounter();
+            }
+        }
+
+        // Insert writing prompt
+        function insertPrompt(prompt) {
+            const textbox = document.getElementById('journalTextbox');
+            const currentText = textbox.value;
+            
+            if (currentText.length === 0) {
+                textbox.value = prompt + ' ';
+            } else {
+                textbox.value = currentText + '\n\n' + prompt + ' ';
+            }
+            
+            textbox.focus();
+            updateCharCounter();
+        }
+
+        // Save draft functionality (using in-memory storage)
+        let savedDraft = '';
+        
+        function saveDraft() {
+            const textbox = document.getElementById('journalTextbox');
+            savedDraft = textbox.value;
+            
+            // Show feedback
+            const saveBtn = document.querySelector('button[onclick="saveDraft()"]');
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fas fa-check"></i> Draft Saved!';
+            saveBtn.style.background = 'var(--success)';
+            
+            setTimeout(() => {
+                saveBtn.innerHTML = originalText;
+                saveBtn.style.background = '';
+            }, 2000);
+        }
+
+        // Load draft function (can be called when needed)
+        function loadDraft() {
+            if (savedDraft) {
+                document.getElementById('journalTextbox').value = savedDraft;
+                updateCharCounter();
+            }
+        }
+
+        // Auto-save draft every 30 seconds
+        setInterval(() => {
+            const textbox = document.getElementById('journalTextbox');
+            if (textbox.value.length > 0) {
+                savedDraft = textbox.value;
+            }
+        }, 30000);
+
+        // Form submission handling
+        document.getElementById('journalForm').addEventListener('submit', function(e) {
+            const textbox = document.getElementById('journalTextbox');
+            if (textbox.value.trim().length === 0) {
+                e.preventDefault();
+                alert('Please write something before saving your journal entry.');
+                textbox.focus();
+            }
+        });
+
+        // Initialize character counter on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCharCounter();
+        });
+    </script>
+</body>
+</html>

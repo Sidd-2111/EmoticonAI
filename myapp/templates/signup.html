@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Emoticon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: radial-gradient(circle at 20% 80%, #0a0a0a 0%, #1a1a2e 40%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 15px 40px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            width: 98%;
+            max-width: 1100px;
+            box-shadow: none;
+        }
+
+        nav:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff4081;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 45px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 12px 28px;
+            border-radius: 25px;
+            background: transparent;
+            min-width: 110px;
+            text-align: center;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 64, 129, 0.2);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff4081, #64b5f6);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 90%;
+            margin: 100px auto 20px auto;
+            padding: 20px;
+        }
+
+        .signup-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            padding: 40px;
+            position: relative;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .signup-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+            z-index: -1; /* Fixed: moved behind content */
+            pointer-events: none; /* Fixed: prevents interference with form interactions */
+        }
+        
+        .signup-container:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) scale(1.1);
+        }
+        
+        .signup-container:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.2);
+            border-color: rgba(255, 64, 129, 0.3);
+        }
+
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 15px rgba(255, 64, 129, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2; /* Fixed: ensures title is above background effects */
+        }
+        
+        h1 i {
+            font-size: 2.8rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        form {
+            position: relative; /* Fixed: ensures proper stacking context */
+            z-index: 1; /* Fixed: ensures form is above background effects */
+        }
+
+        form p {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #64b5f6;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1em;
+        }
+
+        form input[type="text"],
+        form input[type="password"],
+        form input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1rem;
+            position: relative; /* Fixed: ensures proper stacking */
+            z-index: 2; /* Fixed: ensures inputs are above all background effects */
+        }
+
+        form input[type="text"]:focus,
+        form input[type="password"]:focus,
+        form input[type="email"]:focus {
+            outline: none;
+            border-color: #64b5f6;
+            box-shadow: 0 0 8px rgba(100, 181, 246, 0.3);
+        }
+
+        form ul.errorlist {
+            list-style-type: none;
+            padding: 0;
+            margin: -10px 0 10px 0;
+            color: #F44336;
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            color: #000;
+            margin-top: 20px;
+            z-index: 2; /* Fixed: ensures button is clickable */
+        }
+        
+        button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        button[type="submit"]:hover::before {
+            left: 100%;
+        }
+        
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 64, 129, 0.4);
+        }
+
+        .login-link {
+            margin-top: 25px;
+            font-size: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2; /* Fixed: ensures link is clickable */
+        }
+        .login-link a {
+            color: #64b5f6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+            color: #ff4081;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 900px) {
+            nav {
+                max-width: 98vw;
+                padding: 10px 8px;
+            }
+            .nav-links {
+                gap: 18px;
+            }
+            nav a, .btn {
+                min-width: 80px;
+                padding: 10px 10px;
+                font-size: 1rem;
+            }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #64b5f6, #1976d2);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>EMOTICON</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#features">Features</a></li>
+                <li><a href="/#contact">Contact</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#" class="active">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="signup-container">
+            <h1><i class="fas fa-user-plus"></i> Create Account</h1>
+            <form method="post">
+                {% csrf_token %}
+                <p>
+                    <label for="id_username">Username:</label>
+                    <input type="text" name="username" id="id_username" required>
+                </p>
+                <p>
+                    <label for="id_email">Email:</label>
+                    <input type="email" name="email" id="id_email" required>
+                </p>
+                <p>
+                    <label for="id_password1">Password:</label>
+                    <input type="password" name="password1" id="id_password1" required>
+                </p>
+                <p>
+                    <label for="id_password2">Confirm Password:</label>
+                    <input type="password" name="password2" id="id_password2" required>
+                </p>
+                <button type="submit" class="btn btn-secondary"><i class="fas fa-paper-plane"></i> Sign Up</button>
+            </form>
+            <div class="login-link">
+                <p>Already have an account? <a href="{% url 'myapp:login' %}">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Test input functionality
+            const inputs = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    console.log('Input focused:', this.id);
+                });
+                
+                input.addEventListener('input', function() {
+                    console.log('Input value:', this.value);
+                });
+            });
+        });
+    </script>
+
+    <footer>
+        <p>Emoticon Project &copy; 2025 | AI Emotional Companion for Mental Wellness</p>
+        <p>Made with ❤️ </p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Password - Emoticon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #64b5f6; /* Light Blue from main.html */
+            --secondary: #ff4081; /* Pink from main.html */
+            --dark: #1a1a2e; /* Dark Blue from main.html */
+            --darker: #0a0a0a; /* Almost Black from main.html */
+            --light: #ffffff; /* White text */
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --transition: all 0.3s ease;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: radial-gradient(circle at 20% 80%, var(--darker) 0%, var(--dark) 40%, #16213e 100%);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        h1, h2, h3, h4, .btn, nav {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 15px 40px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            width: 98%;
+            max-width: 1100px;
+            box-shadow: none;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 45px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 12px 28px;
+            border-radius: 25px;
+            background: transparent;
+            min-width: 110px;
+            text-align: center;
+        }
+
+        .btn {
+            min-width: 140px;
+            padding: 15px 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 120px auto 20px auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .password-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .security-info {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--success);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .security-info h3 {
+            color: var(--success);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .security-info ul {
+            padding-left: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* This is the corrected CSS rule */
+        .input-group input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--light);
+            font-family: 'Exo 2', sans-serif;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(100, 181, 246, 0.3);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+            /* Adjust top position to align with the input field correctly */
+            margin-top: 15px; 
+        }
+
+        button[type="submit"], .btn-secondary {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            color: #000;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 64, 129, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 64, 129, 0.5);
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+             background: rgba(255, 64, 129, 0.2);
+             transform: translateY(-2px);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            justify-content: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 50px;
+            border-top: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
+
+        @media (max-width: 900px) {
+            nav {
+                max-width: 98vw;
+                padding: 10px 8px;
+            }
+            .nav-links {
+                gap: 18px;
+            }
+            nav a, .btn {
+                min-width: 80px;
+                padding: 10px 10px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <span class="logo-text">EMOTICON</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{% url 'myapp:dashboard' %}" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:journal' %}" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        <span>Journal</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:profile' %}" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:moodchange' %}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Mood Status</span>
+                    </a></li>
+                    <li><a href="{% url 'myapp:logout' %}" class="nav-link logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+    <div class="container">
+        <div class="password-container">
+            <h1><i class="fas fa-key"></i> Change Password</h1>
+            
+            <div class="security-info">
+                <h3><i class="fas fa-shield-alt"></i> Security Tips</h3>
+                <ul>
+                    <li>Use a mix of uppercase and lowercase letters, numbers, and symbols.</li>
+                    <li>Make your password at least 8 characters long.</li>
+                    <li>Avoid using personal information or common words.</li>
+                </ul>
+            </div>
+            
+            <form method="post" id="passwordForm" onsubmit="return false;">
+                <div class="input-group">
+                    <label for="id_old_password">Old Password</label>
+                    <input type="password" id="id_old_password" required>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('id_old_password')"></i>
+                </div>
+                <div class="input-group">
+                    <label for="id_new_password1">New Password</label>
+                    <input type="password" id="id_new_password1" required>
+                     <i class="fas fa-eye password-toggle" onclick="togglePassword('id_new_password1')"></i>
+                </div>
+                 <div class="input-group">
+                    <label for="id_new_password2">Confirm New Password</label>
+                    <input type="password" id="id_new_password2" required>
+                     <i class="fas fa-eye password-toggle" onclick="togglePassword('id_new_password2')"></i>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" id="submitBtn">
+                        <i class="fas fa-save"></i> Update Password
+                    </button>
+                    <a href="#" class="btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Profile
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>Emoticon Project &copy; 2025 | AI Emotional Companion for Mental Wellness</p>
+    </footer>
+
+    <script>
+        function createParticles() {
+            const particleContainer = document.getElementById('particles');
+            if (!particleContainer) return;
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particleContainer.appendChild(particle);
+            }
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        window.addEventListener('load', createParticles);
+    </script>
+</body>
+</html>
