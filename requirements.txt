@@ -30,8 +30,8 @@ tokenizers==0.21.2
 safetensors==0.5.3
 
 # TensorFlow
-tensorflow==2.19.0
-tf-keras==2.19.0
+tensorflow==2.17.0
+tf-keras==2.17.0
 keras==3.10.0
 
 # Computer Vision
@@ -229,7 +229,7 @@ soupsieve==2.7
 sqlparse==0.5.3
 stack-data==0.6.3
 sympy==1.14.0
-tensorboard==2.19.0
+tensorboard==2.17.0
 tensorboard-data-server==0.7.2
 tensorflow-io-gcs-filesystem==0.31.0
 termcolor==3.1.0
@@ -255,3 +255,4 @@ widgetsnbextension==4.0.14
 wrapt==1.17.2
 xxhash==3.5.0
 yarl==1.20.1
+
