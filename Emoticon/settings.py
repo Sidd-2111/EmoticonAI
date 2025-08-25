@@ -46,7 +46,7 @@ DEBUG = True
 
 # Define allowed hosts from an environment variable, split by comma
 # Example: ALLOWED_HOSTS=localhost,127.0.0.1,.onrender.com
-ALLOWED_HOSTS_str = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,abc123.ngrok-free.app,.ngrok-free.app')
+ALLOWED_HOSTS_str = os.environ.get('ALLOWED_HOSTS','127.0.0.1',)
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_str.split(',')]
 
 
@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',  # For serving static files in development
     'django.contrib.staticfiles',
     'myapp.apps.MyAppConfig',  # Corrected from MyappConfig
-    'sslserver',  # For serving over HTTPS in development
+    'sslserver',  # For local HTTPS in development
 ]
 
 MIDDLEWARE = [
@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'Emoticon.wsgi.application'
 
 
 # --- Authentication Settings ---
-LOGIN_URL = 'login'  # Uses the name from auth URLs
+LOGIN_URL = 'myapp:login'  # Uses the name from auth URLs
 LOGIN_REDIRECT_URL = 'myapp:dashboard'  # Redirect after successful login
 LOGOUT_REDIRECT_URL = 'myapp:main'  # Redirect after logout
 
@@ -179,7 +179,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'  # Recommended for Django 3
 # --- Security Settings ---
 
 # Define trusted origins from an environment variable
-CSRF_TRUSTED_ORIGINS_str = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000,http://127.0.0.1:8000,https://abc123.ngrok-free.app,.ngrok-free.app')
+CSRF_TRUSTED_ORIGINS_str = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000,http://127.0.0.1:8000')
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in CSRF_TRUSTED_ORIGINS_str.split(',')]
 
 # Apply security settings only in production (when DEBUG is False)

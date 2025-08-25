@@ -8,7 +8,7 @@ urlpatterns = [
     # Public pages
     path('', views.main_view, name='main'),
     path('home/', views.home_view, name='home'),
-    path('signup/', views.home_view, name='signup'),  # Using home_view as that's what exists
+    path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),  # Custom login view
     
     # Protected pages (require login)

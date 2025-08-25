@@ -375,7 +375,7 @@
 
             <div class="form-container">
                 <h3><i class="fas fa-sign-in-alt"></i> Login</h3>
-                <form method="post" id="login-form" class="form active" action="{% url 'login' %}">
+                <form method="post" id="login-form" class="form active" action="{% url 'myapp:login' %}">
                     {% csrf_token %}
                     <p>
                         <label for="id_username">Username:</label>

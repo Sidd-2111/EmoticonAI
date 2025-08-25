@@ -4,8 +4,10 @@ import os
 import json
 import logging
 from datetime import datetime, timedelta
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, StreamingHttpResponse
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 import cv2
 from .backend.facedetection import EmotionDetector, send_to_n8n_init
 from .backend.chatbot import send_to_n8n_chat
@@ -13,7 +15,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 import hmac, hashlib
 from django.conf import settings
-from .models import N8nChatEvent, N8nEmotionEvent
+from .models import N8nChatEvent, N8nEmotionEvent, Profile
+from .forms import SignupForm
 
 
 def _verify_n8n_signature(raw_body: bytes, header_sig: str) -> bool:
@@ -575,12 +578,36 @@ def video_feed(request):
 
 
 def home_view(request):
-    """Home/signup view"""
-    return render(request, 'signup.html')
+    """Home view"""
+    return render(request, 'home.html')
 
+
+def signup_view(request):
+    """Signup view"""
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Create associated profile
+            Profile.objects.create(user=user)
+            messages.success(request, 'Account created successfully. You can now login.')
+            return redirect('myapp:login')
+    else:
+        form = SignupForm()
+    return render(request, 'signup.html', {'form': form})
 
 def login_view(request):
     """Login view"""
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Login successful!')
+            return redirect('myapp:home')
+        else:
+            messages.error(request, 'Invalid username or password.')
     return render(request, 'login.html')
 
 

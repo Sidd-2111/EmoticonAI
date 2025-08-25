@@ -22,10 +22,5 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),
-    # Override the default login URL with your custom login view
-    path('accounts/login/', auth_views.LoginView.as_view(
-        template_name='login.html',
-        redirect_field_name='next'
-    ), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
