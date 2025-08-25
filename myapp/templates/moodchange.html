@@ -251,6 +251,109 @@
             box-shadow: none;
         }
 
+        /* Loading Animation Styles */
+        .loading-view {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .loading-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .loading-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+        }
+
+        .progress-container {
+            max-width: 500px;
+            margin: 0 auto 40px auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            border-radius: 20px;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .progress-text {
+            margin-top: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        .jokes-container {
+            margin-top: 40px;
+            min-height: 100px;
+        }
+
+        .joke-text {
+            font-size: 1.1rem;
+            color: #fff;
+            background: rgba(255, 64, 129, 0.1);
+            border: 1px solid rgba(255, 64, 129, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            animation: slideIn 0.5s ease-out;
+            line-height: 1.5;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .loading-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         /* View Animation */
         .view {
             animation: fadeIn 0.5s ease-in-out;
@@ -479,23 +582,23 @@
                     <span class="logo-text">EMOTICON</span>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="{% url 'myapp:dashboard' %}" class="nav-link active">
+                    <li><a href="#" class="nav-link active">
                         <i class="fas fa-home"></i>
                         <span>Dashboard</span>
                     </a></li>
-                    <li><a href="{% url 'myapp:journal' %}" class="nav-link">
+                    <li><a href="#" class="nav-link">
                         <i class="fas fa-book"></i>
                         <span>Journal</span>
                     </a></li>
-                    <li><a href="{% url 'myapp:profile' %}" class="nav-link">
+                    <li><a href="#" class="nav-link">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a></li>
-                    <li><a href="{% url 'myapp:moodchange' %}" class="nav-link">
+                    <li><a href="#" class="nav-link">
                         <i class="fas fa-chart-line"></i>
                         <span>Mood Status</span>
                     </a></li>
-                    <li><a href="{% url 'myapp:logout' %}" class="nav-link logout">
+                    <li><a href="#" class="nav-link logout">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </a></li>
@@ -516,7 +619,7 @@
     </main>
 
     <!-- Footer - Consistent with journal.html -->
-            <footer>
+    <footer>
         <p>Emoticon Project &copy; 2025 | AI Emotional Companion for Mental Wellness</p>
         <p>Made with &hearts;</p>
     </footer>
@@ -527,53 +630,206 @@
                 displayName: 'Sad',
                 icon: '😢',
                 roadmaps: [
-                    { name: 'Calm & Soothe', reward: '🌙 "You have taken a step towards peace."', tasks: ['Deep breathing (1 min guided)', 'Listen to a calming soundscape (rain, ocean)', 'Write down 1 safe place/person that makes you feel comforted'] },
-                    { name: 'Express & Release', reward: '✨ "Expressing is healing."', tasks: ['Journal prompt: "Why do I feel sad right now?"', 'Allow yourself 2 mins to cry/vent (yes, it is valid)', 'Write 1 gratitude note'] },
-                    { name: 'Lift & Distract', reward: '🌈 "Sadness shifted into light."', tasks: ['Quick physical activity (stretch/jump for 30 sec)', 'Chatbot "What If" fun scenario', 'Write 1 positive memory'] }
+                    { 
+                        name: 'Calm & Soothe', 
+                        reward: '🌙 "You have taken a step towards peace."', 
+                        tasks: ['Deep breathing (1 min guided)', 'Listen to a calming soundscape (rain, ocean)', 'Write down 1 safe place/person that makes you feel comforted'],
+                        jokes: [
+                            "Why don't scientists trust atoms? Because they make up everything! Just like how you'll make up from this feeling! 💙",
+                            "What do you call a bear with no teeth? A gummy bear! Sweet like the comfort coming your way! 🐻",
+                            "Why did the coffee file a police report? It got mugged! But unlike coffee, your mood is about to get much better! ☕"
+                        ]
+                    },
+                    { 
+                        name: 'Express & Release', 
+                        reward: '✨ "Expressing is healing."', 
+                        tasks: ['Journal prompt: "Why do I feel sad right now?"', 'Allow yourself 2 mins to cry/vent (yes, it is valid)', 'Write 1 gratitude note'],
+                        jokes: [
+                            "Why don't eggs tell jokes? They'd crack each other up! Just like how expressing yourself will crack open new possibilities! 🥚",
+                            "What's the best thing about Switzerland? I don't know, but the flag is a big plus! Just like releasing your emotions! 🇨🇭",
+                            "Why did the scarecrow win an award? He was outstanding in his field! Soon you'll be outstanding too! 🌾"
+                        ]
+                    },
+                    { 
+                        name: 'Lift & Distract', 
+                        reward: '🌈 "Sadness shifted into light."', 
+                        tasks: ['Quick physical activity (stretch/jump for 30 sec)', 'Chatbot "What If" fun scenario', 'Write 1 positive memory'],
+                        jokes: [
+                            "Why don't skeletons fight each other? They don't have the guts! But you do have the guts to feel better! 💀",
+                            "What do you call a dinosaur that crashes his car? Tyrannosaurus Wrecks! But you're about to T-Rex this sadness! 🦕",
+                            "Why did the math book look so sad? Because it had too many problems! Unlike you - you're solving yours! 📚"
+                        ]
+                    }
                 ]
             },
             angry: {
                 displayName: 'Angry',
                 icon: '😡',
                 roadmaps: [
-                    { name: 'Burn It Out', reward: '🔥 "You have transformed your fire into calm."', tasks: ['Shake arms & stomp feet for 10 secs', 'Breathing countdown (inhale 4, exhale 6)', 'Write what triggered anger then shred/delete'] },
-                    { name: 'Reframe It', reward: '⚖️ "Clarity brings balance."', tasks: ['Journal: "What is in my control vs not?"', 'Chatbot reframing: AI suggests 2 new perspectives', 'Gratitude prompt (write 1 good thing today)'] },
-                    { name: 'Cool Down', reward: '❄️ "Anger cooled, strength remains."', tasks: ['Play a 1-min calming video (nature clip)', 'Write 1 healthy response you could try next time', 'End with positive affirmation'] }
+                    { 
+                        name: 'Burn It Out', 
+                        reward: '🔥 "You have transformed your fire into calm."', 
+                        tasks: ['Shake arms & stomp feet for 10 secs', 'Breathing countdown (inhale 4, exhale 6)', 'Write what triggered anger then shred/delete'],
+                        jokes: [
+                            "Why don't angry people ever win at poker? They always show their hand! Time to play your cards right! 🃏",
+                            "What did the angry customer say to the WiFi? 'You have connection issues!' But we're connecting you to calm! 📶",
+                            "Why was the math teacher angry? Too many fractions! Let's make your anger a fraction of what it was! ➗"
+                        ]
+                    },
+                    { 
+                        name: 'Reframe It', 
+                        reward: '⚖️ "Clarity brings balance."', 
+                        tasks: ['Journal: "What is in my control vs not?"', 'Chatbot reframing: AI suggests 2 new perspectives', 'Gratitude prompt (write 1 good thing today)'],
+                        jokes: [
+                            "Why don't scientists trust stairs? They're always up to something! But you're up to something great - reframing! 🪜",
+                            "What do you call a sleeping bull? A bulldozer! Soon your anger will be dozed away! 🐂",
+                            "Why did the picture go to jail? It was framed! But you're reframing for freedom! 🖼️"
+                        ]
+                    },
+                    { 
+                        name: 'Cool Down', 
+                        reward: '❄️ "Anger cooled, strength remains."', 
+                        tasks: ['Play a 1-min calming video (nature clip)', 'Write 1 healthy response you could try next time', 'End with positive affirmation'],
+                        jokes: [
+                            "What do you call a cold dog? A chili dog! You're about to be as cool as one! 🌶️",
+                            "Why don't mountains ever get cold? They wear snow caps! Time to put on your cool cap! 🏔️",
+                            "What's a penguin's favorite relative? Aunt Arctica! Soon you'll be as cool as Antarctica! 🐧"
+                        ]
+                    }
                 ]
             },
             anxious: {
                 displayName: 'Anxious',
                 icon: '😰',
                 roadmaps: [
-                    { name: 'Ground & Calm', reward: '🌱 "Calm roots are growing."', tasks: ['Guided box breathing', 'Touch 5 things you see (5-4-3-2-1 technique)', 'Journal: Write your 3 worries then rank importance'] },
-                    { name: 'Reassure & Reset', reward: '🕊 "Anxiety eased, clarity found."', tasks: ['Chatbot reassurance: "What is the worst that could happen vs what is likely?"', 'Replace negative thought with a neutral one', 'Listen to 2-min calming playlist'] },
-                    { name: 'Energize & Release', reward: '⚡ "Energy redirected."', tasks: ['Quick body shake/stretch', 'Write 1 productive step you can take today', 'Fun "What If" distraction scenario'] }
+                    { 
+                        name: 'Ground & Calm', 
+                        reward: '🌱 "Calm roots are growing."', 
+                        tasks: ['Guided box breathing', 'Touch 5 things you see (5-4-3-2-1 technique)', 'Journal: Write your 3 worries then rank importance'],
+                        jokes: [
+                            "Why don't anxious people play hide and seek? They always worry about being found! But peace will find you! 👁️",
+                            "What did the anxious tree say? 'I'm rooting for myself!' You should too! 🌳",
+                            "Why was the anxious computer cold? It left its Windows open! Time to close those worry windows! 💻"
+                        ]
+                    },
+                    { 
+                        name: 'Reassure & Reset', 
+                        reward: '🕊 "Anxiety eased, clarity found."', 
+                        tasks: ['Chatbot reassurance: "What is the worst that could happen vs what is likely?"', 'Replace negative thought with a neutral one', 'Listen to 2-min calming playlist'],
+                        jokes: [
+                            "Why don't clouds ever worry? They know every storm passes! Yours will too! ⛅",
+                            "What do you call a relaxed ghost? Peaceful spirits! That's what you'll have! 👻",
+                            "Why did the worried clock go to therapy? It had too much time anxiety! Your time for calm is coming! ⏰"
+                        ]
+                    },
+                    { 
+                        name: 'Energize & Release', 
+                        reward: '⚡ "Energy redirected."', 
+                        tasks: ['Quick body shake/stretch', 'Write 1 productive step you can take today', 'Fun "What If" distraction scenario'],
+                        jokes: [
+                            "What do you call an energetic anxiety? A worry in a hurry! Let's hurry it away! 🏃‍♀️",
+                            "Why don't batteries get anxious? They stay positive! Time for you to recharge positively! 🔋",
+                            "What's a lightning bolt's favorite exercise? Shock aerobics! Get ready to shock that anxiety away! ⚡"
+                        ]
+                    }
                 ]
             },
             stressed: {
                 displayName: 'Stressed',
                 icon: '😫',
                 roadmaps: [
-                    { name: 'Pause & Reset', reward: '💧 "Stress softened with clarity."', tasks: ['Breathing: inhale calm, exhale stress', 'Write down 3 tasks then pick just 1 to do now', 'Drink water or stretch break'] },
-                    { name: 'Organize & Focus', reward: '📌 "Stress untangled, focus sharpened."', tasks: ['List top 3 stressors', 'Break big task into 2 smaller ones', 'Journal: one thing you can control right now'] },
-                    { name: 'Relax & Recharge', reward: '🌙 "You have gifted yourself rest."', tasks: ['Guided relaxation (progressive muscle relax)', 'Fun "What If" question with chatbot', 'End with mindful gratitude'] }
+                    { 
+                        name: 'Pause & Reset', 
+                        reward: '💧 "Stress softened with clarity."', 
+                        tasks: ['Breathing: inhale calm, exhale stress', 'Write down 3 tasks then pick just 1 to do now', 'Drink water or stretch break'],
+                        jokes: [
+                            "Why don't stressed computers ever crash? They always have a good backup! You've got good backup too! 💾",
+                            "What did the stressed coffee say? 'I can't espresso how I feel!' But you can express your way to calm! ☕",
+                            "Why was the stressed balloon calm? It learned to let things go! Time for you to deflate that stress! 🎈"
+                        ]
+                    },
+                    { 
+                        name: 'Organize & Focus', 
+                        reward: '📌 "Stress untangled, focus sharpened."', 
+                        tasks: ['List top 3 stressors', 'Break big task into 2 smaller ones', 'Journal: one thing you can control right now'],
+                        jokes: [
+                            "Why don't organized people get stressed? They have everything in its place! Soon you will too! 📚",
+                            "What do you call a focused elephant? Concentrated! Get ready to concentrate on calm! 🐘",
+                            "Why did the stressed paper feel better? It got organized into folders! Time to file away that stress! 📁"
+                        ]
+                    },
+                    { 
+                        name: 'Relax & Recharge', 
+                        reward: '🌙 "You have gifted yourself rest."', 
+                        tasks: ['Guided relaxation (progressive muscle relax)', 'Fun "What If" question with chatbot', 'End with mindful gratitude'],
+                        jokes: [
+                            "What do you call a sleeping stress ball? Relaxed! That's what you'll be! 😴",
+                            "Why don't hammocks ever get stressed? They know how to hang in there! Time for you to hang loose! 🏖️",
+                            "What did the tired stress say to relaxation? 'You're a breath of fresh air!' Breathe it in! 🌬️"
+                        ]
+                    }
                 ]
             },
             lonely: {
                 displayName: 'Lonely',
                 icon: '😔',
                 roadmaps: [
-                    { name: 'Connection Boost', reward: '💌 "Connection starts with small steps."', tasks: ['Write the name of one person you can reach out to', 'Send a quick positive message/text', 'Journal: "What do I wish someone would say to me? Write it."'] },
-                    { name: 'Self-Companionship', reward: '🌸 "You are your own best friend."', tasks: ['Listen to a guided meditation on self-love', 'Write 3 things you appreciate about yourself', 'Chatbot generates a compliment for you'] },
-                    { name: 'Distraction & Fun', reward: '🎉 "Loneliness eased by joy."', tasks: ['Quick mood-boosting activity (randomized suggestion: dance, doodle, sing)', 'Fun "What If" imagination game', 'Journal: "1 thing I would love to try when I meet new people."'] }
+                    { 
+                        name: 'Connection Boost', 
+                        reward: '💌 "Connection starts with small steps."', 
+                        tasks: ['Write the name of one person you can reach out to', 'Send a quick positive message/text', 'Journal: "What do I wish someone would say to me? Write it."'],
+                        jokes: [
+                            "Why don't lonely socks ever stay sad? They always find their sole mate! You'll find your connections too! 🧦",
+                            "What did the lonely WiFi say? 'I'm looking for a connection!' Good thing you're about to connect! 📡",
+                            "Why was the lonely phone happy? It finally got some calls! Your connections are calling! 📞"
+                        ]
+                    },
+                    { 
+                        name: 'Self-Companionship', 
+                        reward: '🌸 "You are your own best friend."', 
+                        tasks: ['Listen to a guided meditation on self-love', 'Write 3 things you appreciate about yourself', 'Chatbot generates a compliment for you'],
+                        jokes: [
+                            "What do you call someone who's their own best friend? Independent and awesome! That's you! 🌟",
+                            "Why don't mirrors get lonely? They always have great company! So do you - yourself! 🪞",
+                            "What did the lonely book say? 'I complete myself!' You're about to feel complete too! 📖"
+                        ]
+                    },
+                    { 
+                        name: 'Distraction & Fun', 
+                        reward: '🎉 "Loneliness eased by joy."', 
+                        tasks: ['Quick mood-boosting activity (randomized suggestion: dance, doodle, sing)', 'Fun "What If" imagination game', 'Journal: "1 thing I would love to try when I meet new people."'],
+                        jokes: [
+                            "Why don't lonely comedians exist? They always make themselves laugh! Time for you to giggle! 😄",
+                            "What do you call a lonely party? A solo celebration! And you're worth celebrating! 🎊",
+                            "Why was the lonely dance floor happy? Someone finally showed up! You're showing up for yourself! 💃"
+                        ]
+                    }
                 ]
             },
             happy: {
                 displayName: 'Happy',
                 icon: '😊',
                 roadmaps: [
-                    { name: 'Spread the Joy', reward: '🌟 "Happiness multiplies when shared."', tasks: ['Write 3 things making you happy', 'Share one with a friend', 'Do a quick dance/celebration'] },
-                    { name: 'Capture the Moment', reward: '📸 "Memory captured for rainy days."', tasks: ['Take a selfie or draw your happy face', 'Journal: Describe today in 3 words', 'Save this entry in your "Happiness Vault"'] }
+                    { 
+                        name: 'Spread the Joy', 
+                        reward: '🌟 "Happiness multiplies when shared."', 
+                        tasks: ['Write 3 things making you happy', 'Share one with a friend', 'Do a quick dance/celebration'],
+                        jokes: [
+                            "Why don't happy people need GPS? They always know they're in a good place! Keep spreading those vibes! 🗺️",
+                            "What do you call a happy bee? Bee-coming even happier! That's you! 🐝",
+                            "Why was the happy sun so bright? It couldn't contain its joy! Shine on! ☀️"
+                        ]
+                    },
+                    { 
+                        name: 'Capture the Moment', 
+                        reward: '📸 "Memory captured for rainy days."', 
+                        tasks: ['Take a selfie or draw your happy face', 'Journal: Describe today in 3 words', 'Save this entry in your "Happiness Vault"'],
+                        jokes: [
+                            "Why don't happy cameras ever malfunction? They always focus on the positive! Say cheese! 📷",
+                            "What do you call a happy memory? A smile waiting to happen! Keep collecting them! 😊",
+                            "Why was the happy diary always full? It had so many good memories to write! Keep writing yours! 📝"
+                        ]
+                    }
                 ]
             }
         };
@@ -637,9 +893,64 @@
             
             document.querySelectorAll('.start-roadmap-btn').forEach(button => {
                 button.addEventListener('click', () => {
-                    renderTaskView(button.dataset.emotion, button.dataset.roadmapIndex);
+                    renderLoadingView(button.dataset.emotion, button.dataset.roadmapIndex);
                 });
             });
+        }
+
+        function renderLoadingView(emotionKey, roadmapIndex) {
+            const emotion = moodData[emotionKey];
+            const roadmap = emotion.roadmaps[roadmapIndex];
+            
+            container.innerHTML = `
+                <div id="loading-view" class="view">
+                    <div class="panel loading-view">
+                        <div class="loading-icon">⚙️</div>
+                        <h1 class="loading-title">Generating Roadmap</h1>
+                        <p class="loading-subtitle">Crafting your personalized journey to feel better...</p>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                            <div class="progress-text" id="progressText">0%</div>
+                        </div>
+                        
+                        <div class="jokes-container" id="jokesContainer">
+                            <!-- Jokes will appear here -->
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const jokesContainer = document.getElementById('jokesContainer');
+            
+            let progress = 0;
+            let jokeIndex = 0;
+            
+            // Progress animation
+            const progressInterval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = progress + '%';
+                progressText.textContent = progress + '%';
+                
+                // Show jokes at 20%, 50%, and 80%
+                if ((progress === 20 || progress === 50 || progress === 80) && jokeIndex < roadmap.jokes.length) {
+                    const jokeDiv = document.createElement('div');
+                    jokeDiv.className = 'joke-text';
+                    jokeDiv.textContent = roadmap.jokes[jokeIndex];
+                    jokesContainer.appendChild(jokeDiv);
+                    jokeIndex++;
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    // Wait a moment then transition to task view
+                    setTimeout(() => {
+                        renderTaskView(emotionKey, roadmapIndex);
+                    }, 1000);
+                }
+            }, 100); // 10 seconds total (100ms * 100 = 10000ms)
         }
 
         function renderTaskView(emotionKey, roadmapIndex) {
@@ -706,7 +1017,7 @@
                             <button id="return-home-btn" class="btn btn-primary">
                                 <i class="fas fa-home"></i> New Journey
                             </button>
-                            <a href="{% url 'myapp:dashboard' %}" class="btn btn-secondary">
+                            <a href="#" class="btn btn-secondary">
                                 <i class="fas fa-chart-line"></i> Dashboard
                             </a>
                         </div>

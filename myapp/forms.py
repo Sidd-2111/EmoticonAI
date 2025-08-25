@@ -1,18 +1,70 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import JournalEntry,Profile # Import the new model
 from django import forms
 from django.contrib.auth.models import User
+from .models import JournalEntry, Profile
+
+# myapp/forms.py
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
-
 class SignupForm(UserCreationForm):
-    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-
+    email = forms.EmailField(max_length=254, required=True, help_text='Required.')
+    full_name = forms.CharField(max_length=255, required=False)
+    phone_number = forms.CharField(max_length=20, required=False)
+    
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = UserCreationForm.Meta.fields + ('email',)
+        fields = ('username', 'email')
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add Bootstrap classes and placeholders
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Enter your username'
+        })
+        self.fields['email'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Enter your email'
+        })
+        self.fields['password1'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Enter your password'
+        })
+        self.fields['password2'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Confirm your password'
+        })
+        self.fields['full_name'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Enter your full name (optional)'
+        })
+        self.fields['phone_number'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Enter your phone number (optional)'
+        })
+    
+    def save(self, commit=True):
+        # The parent save() method will handle username, email, and a properly
+        # hashed password. We just need to save the user, then the profile.
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            # Use update_or_create for robustness, in case a profile was
+            # already created by a signal.
+            Profile.objects.update_or_create(
+                user=user,
+                defaults={
+                    'full_name': self.cleaned_data.get('full_name', ''),
+                    'phone_number': self.cleaned_data.get('phone_number', '')
+                }
+            )
+        return user
+
 
 class JournalEntryForm(forms.ModelForm):
     content = forms.CharField(
@@ -33,17 +85,6 @@ class JournalEntryForm(forms.ModelForm):
         model = JournalEntry
         fields = ['content']
 
-class ProfileUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ['avatar', 'bio', 'location']
-        # Optional: Add custom widgets or labels if needed
-        # labels = {
-        #     'avatar': 'Profile Picture',
-        # }
-        widgets = {
-            'bio': forms.Textarea(attrs={'rows': 4}),
-        }
 
 class UserUpdateForm(forms.ModelForm):
     # The 'username' field from Meta.fields will be used for the User's login username.

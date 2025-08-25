@@ -580,34 +580,83 @@ def video_feed(request):
 def home_view(request):
     """Home view"""
     return render(request, 'home.html')
-
-
+# Enhanced signup view
 def signup_view(request):
-    """Signup view"""
+    """Enhanced signup view with proper database integration"""
+    if request.user.is_authenticated:
+        return redirect('myapp:home')
+    
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # Create associated profile
-            Profile.objects.create(user=user)
-            messages.success(request, 'Account created successfully. You can now login.')
-            return redirect('myapp:login')
+            try:
+                user = form.save()
+                messages.success(request, 'Account created successfully! You can now login.')
+                logger.info(f"New user account created: {user.username} (ID: {user.id})")
+                return redirect('myapp:login')
+            except Exception as e:
+                logger.error(f"Error creating user account: {str(e)}")
+                messages.error(request, 'Error creating account. Please try again.')
+        else:
+            logger.warning(f"Signup form validation failed: {form.errors}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
         form = SignupForm()
+    
     return render(request, 'signup.html', {'form': form})
 
+# Enhanced login view
 def login_view(request):
-    """Login view"""
+    """Enhanced login view with proper session management"""
+    if request.user.is_authenticated:
+        return redirect('myapp:home')
+    
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+        
+        if not username or not password:
+            messages.error(request, 'Please enter both username and password.')
+            return render(request, 'login.html')
+        
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            messages.success(request, 'Login successful!')
-            return redirect('myapp:home')
+            if user.is_active:
+                login(request, user)
+                
+                # Ensure user has a profile
+                try:
+                    profile = user.profile
+                except Profile.DoesNotExist:
+                    Profile.objects.create(user=user)
+                    logger.info(f"Created missing profile for user {user.username}")
+                
+                # Initialize chat session
+                user_id = str(user.id)
+                if user_id not in conversation_memory.conversations:
+                    conversation_memory.conversations[user_id] = {
+                        'messages': [],
+                        'topics': set(),
+                        'emotions': [],
+                        'preferences': {},
+                        'start_time': datetime.now()
+                    }
+                
+                messages.success(request, f'Welcome back, {user.username}!')
+                logger.info(f"User '{username}' logged in successfully (ID: {user.id})")
+                
+                # Redirect to next page or home
+                next_page = request.GET.get('next', 'myapp:home')
+                return redirect(next_page)
+            else:
+                messages.error(request, 'Your account is inactive. Please contact support.')
+                logger.warning(f"Inactive user attempted login: {username}")
         else:
             messages.error(request, 'Invalid username or password.')
+            logger.warning(f"Failed login attempt for username: '{username}'")
+    
     return render(request, 'login.html')
 
 

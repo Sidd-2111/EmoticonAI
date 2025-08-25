@@ -27,13 +27,18 @@ class JournalEntry(models.Model):
     class Meta:
         ordering = ['-created_at'] # Order by newest first
         verbose_name_plural = "Journal Entries"
-
+        
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to='avatars/', default='avatars/default.png')
-    bio = models.TextField(max_length=500, blank=True)
-    location = models.CharField(max_length=100, blank=True)
-
+    full_name = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Profile for {self.user.username}"
 
 class N8nChatEvent(models.Model):
     user_id = models.CharField(max_length=128, blank=True, null=True)
