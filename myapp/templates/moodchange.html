@@ -582,23 +582,23 @@
                     <span class="logo-text">EMOTICON</span>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#" class="nav-link active">
+                    <li><a href="{% url 'myapp:dashboard' %}" class="nav-link active">
                         <i class="fas fa-home"></i>
                         <span>Dashboard</span>
                     </a></li>
-                    <li><a href="#" class="nav-link">
+                    <li><a href="{% url 'myapp:journal' %}" class="nav-link">
                         <i class="fas fa-book"></i>
                         <span>Journal</span>
                     </a></li>
-                    <li><a href="#" class="nav-link">
+                    <li><a href="{% url 'myapp:profile' %}" class="nav-link">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a></li>
-                    <li><a href="#" class="nav-link">
+                    <li><a href="{% url 'myapp:moodchange' %}" class="nav-link">
                         <i class="fas fa-chart-line"></i>
                         <span>Mood Status</span>
                     </a></li>
-                    <li><a href="#" class="nav-link logout">
+                    <li><a href="{% url 'myapp:logout' %}" class="nav-link logout">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </a></li>
