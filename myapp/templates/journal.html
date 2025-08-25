@@ -3,383 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emoticon - Journal</title>
+    <title>Daily Journal - Emoticon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <style>
+        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff4081, #64b5f6);
+            --secondary-gradient: linear-gradient(135deg, #64b5f6, #1976d2);
+            --dark-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --accent-pink: #ff4081;
+            --accent-blue: #64b5f6;
+            --success: #4caf50;
+            --warning: #ffc107;
+            --error: #f44336;
+            --shadow-light: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 12px 40px rgba(0, 0, 0, 0.2);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.3);
+            --border-radius: 20px;
+            --transition-fast: 0.2s ease;
+            --transition-medium: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
         body {
             font-family: 'Exo 2', sans-serif;
-            background: radial-gradient(circle at 20% 80%, #0a0a0a 0%, #1a1a2e 40%, #16213e 100%);
-            color: #fff;
+            background: var(--dark-gradient);
+            color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+            line-height: 1.6;
         }
 
-        nav {
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-1 { width: 80px; height: 80px; top: 20%; left: 10%; animation-delay: 0s; }
+        .shape-2 { width: 120px; height: 120px; top: 60%; right: 15%; animation-delay: -5s; }
+        .shape-3 { width: 60px; height: 60px; bottom: 30%; left: 20%; animation-delay: -10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            25% { transform: translateY(-30px) rotate(90deg) scale(1.1); }
+            50% { transform: translateY(-60px) rotate(180deg) scale(0.9); }
+            75% { transform: translateY(-30px) rotate(270deg) scale(1.05); }
+        }
+
+        /* Navigation */
+        .navbar {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--glass-border);
             border-radius: 50px;
-            padding: 15px 40px;
+            padding: 15px 30px;
             z-index: 1000;
-            transition: all 0.3s ease;
-            width: 98%;
-            max-width: 1100px;
-            box-shadow: none;
+            transition: all var(--transition-medium);
+            width: 95%;
+            max-width: 1200px;
         }
 
-        nav:hover {
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.3);
+        .nav-container { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%; 
         }
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            font-family: 'Orbitron', monospace; 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            color: var(--accent-pink); 
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .logo-icon { 
+            width: 50px; 
+            height: 50px; 
+            background: var(--primary-gradient); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.5rem; 
+            color: white; 
+        }
+
+        .logo-text { 
+            background: var(--primary-gradient); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text; 
+        }
+
+        .nav-links { 
+            display: flex; 
+            list-style: none; 
+            gap: 10px; 
+            align-items: center; 
+        }
+
+        .nav-link { 
+            color: var(--text-primary); 
+            text-decoration: none; 
+            font-weight: 600; 
+            position: relative; 
+            transition: all var(--transition-medium); 
+            padding: 12px 20px; 
+            border-radius: 25px; 
+            background: transparent; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            overflow: hidden; 
+        }
+
+        .nav-link::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: -100%; 
+            width: 100%; 
+            height: 100%; 
+            background: var(--primary-gradient); 
+            transition: left var(--transition-medium); 
+            z-index: -1; 
+            border-radius: 25px; 
+        }
+
+        .nav-link:hover::before, .nav-link.active::before { left: 0; }
+        .nav-link:hover, .nav-link.active { 
+            color: white; 
+            transform: translateY(-2px); 
+            box-shadow: var(--shadow-medium); 
+        }
+
+        /* Main Container */
+        .container { 
+            max-width: 1200px; 
+            margin: 120px auto 0; 
+            padding: 20px; 
+            position: relative; 
+            z-index: 10; 
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .page-title {
             font-family: 'Orbitron', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #ff4081;
-        }
-
-        .logo i {
-            font-size: 2rem;
-            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            margin-bottom: 10px;
         }
 
-        .nav-links {
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        /* Panel Styles */
+        .panel { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: var(--border-radius); 
+            padding: 40px; 
+            box-shadow: var(--shadow-medium); 
+            transition: all var(--transition-medium); 
+            position: relative; 
+            overflow: hidden; 
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .panel::before { 
+            content: ''; 
+            position: absolute; 
+            top: -50%; 
+            left: -50%; 
+            width: 200%; 
+            height: 200%; 
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%); 
+            transform: rotate(45deg); 
+            transition: all var(--transition-slow); 
+            opacity: 0; 
+        }
+
+        .panel:hover::before { opacity: 1; transform: rotate(45deg) scale(1.1); }
+        .panel:hover { 
+            transform: translateY(-5px) scale(1.01); 
+            box-shadow: var(--shadow-heavy); 
+            border-color: rgba(255, 64, 129, 0.3); 
+        }
+
+        .panel-header {
             display: flex;
-            list-style: none;
-            gap: 45px;
+            justify-content: space-between;
             align-items: center;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            position: relative;
-            transition: all 0.3s ease;
-            padding: 12px 28px;
-            border-radius: 25px;
-            background: transparent;
-            min-width: 110px;
-            text-align: center;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background: rgba(255, 64, 129, 0.2);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #ff4081, #64b5f6);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 15px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 100px auto 20px auto;
-            padding: 20px;
-        }
-
-        .panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .panel::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
-            opacity: 0;
-        }
-        
-        .panel:hover::before {
-            opacity: 1;
-            transform: rotate(45deg) scale(1.1);
-        }
-        
-        .panel:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.2);
-            border-color: rgba(255, 64, 129, 0.3);
+            margin-bottom: 30px;
         }
 
         .panel-title {
             font-family: 'Orbitron', monospace;
-            font-size: 2.2rem;
-            margin-bottom: 25px;
+            font-size: 1.8rem;
             display: flex;
             align-items: center;
             gap: 15px;
-            background: linear-gradient(45deg, #ff4081, #64b5f6);
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .panel-title i {
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, #ff4081, #64b5f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .journal-entry {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .journal-header {
+        .title-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .journal-date {
-            font-weight: 600;
-            color: #64b5f6;
-        }
-
-        .journal-mood {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .journal-content {
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-
-        .textbox-container {
-            position: relative;
-            margin-top: 15px;
-        }
-
-        .textbox-label {
-            display: block;
-            color: #64b5f6;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-
-        textarea, .journal-textbox {
-            width: 100%;
-            min-height: 180px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            color: #fff;
-            font-size: 1.1rem;
-            resize: vertical;
-            font-family: 'Exo 2', sans-serif;
-            line-height: 1.6;
-            transition: all 0.3s ease;
-        }
-
-        textarea:focus, .journal-textbox:focus {
-            outline: none;
-            border-color: #64b5f6;
-            background: rgba(0, 0, 0, 0.3);
-            box-shadow: 0 0 20px rgba(100, 181, 246, 0.2);
-        }
-
-        textarea::placeholder, .journal-textbox::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-            font-style: italic;
-        }
-
-        .char-counter {
-            text-align: right;
-            margin-top: 8px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            min-width: 140px;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            background: linear-gradient(45deg, #ff4081, #64b5f6);
-            color: #000;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 64, 129, 0.4);
+            font-size: 1.3rem;
+            color: white;
+            animation: iconBounce 2s ease-in-out infinite;
         }
 
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid rgba(255, 64, 129, 0.5);
-            color: #fff;
-            box-shadow: none;
+        @keyframes iconBounce { 
+            0%, 100% { transform: scale(1) rotate(0deg); } 
+            50% { transform: scale(1.1) rotate(5deg); } 
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 64, 129, 0.1);
-            border-color: rgba(255, 64, 129, 0.8);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 64, 129, 0.2);
-        }
-
-        .btn-sm {
-            padding: 10px 20px;
-            font-size: 0.95rem;
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .journal-recent-title {
-            margin: 30px 0 15px;
+        /* Form Styles */
+        .journal-form {
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
             gap: 10px;
-            font-size: 1.8rem;
-            background: linear-gradient(45deg, #ff4081, #64b5f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
-        .journal-recent-title i {
-            font-size: 2rem;
-            background: linear-gradient(45deg, #ff4081, #64b5f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .form-label {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
-        .writing-prompts {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .prompt-section {
+            background: rgba(100, 181, 246, 0.1);
             border-radius: 15px;
             padding: 20px;
-            margin: 15px 0;
-            border-left: 4px solid #ff4081;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            margin-bottom: 20px;
         }
 
-        .writing-prompts h4 {
-            color: #ff4081;
+        .prompt-header {
+            color: var(--accent-blue);
+            font-weight: 600;
             margin-bottom: 15px;
-            font-size: 1.1rem;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .prompt-list {
+        .prompt-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -387,72 +330,255 @@
 
         .prompt-tag {
             background: rgba(255, 64, 129, 0.2);
-            color: #fff;
-            padding: 8px 18px;
+            color: var(--accent-pink);
+            padding: 10px 18px;
             border-radius: 25px;
+            border: 1px solid rgba(255, 64, 129, 0.3);
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 64, 129, 0.3);
+            transition: all var(--transition-medium);
+            position: relative;
+            overflow: hidden;
         }
 
         .prompt-tag:hover {
             background: rgba(255, 64, 129, 0.3);
-            border-color: #ff4081;
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.2);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-light);
         }
 
-        footer {
-            text-align: center;
-            padding: 50px 20px;
-            margin-top: 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
+        .prompt-tag:active {
+            transform: translateY(-1px);
+        }
+
+        .textarea-container {
             position: relative;
-            z-index: 10;
-        }
-        
-        footer p {
-            margin-bottom: 10px;
-            opacity: 0.8;
         }
 
-        @media (max-width: 900px) {
-            nav {
-                max-width: 98vw;
-                padding: 10px 8px;
-            }
-            .nav-links {
-                gap: 18px;
-            }
-            nav a, .btn {
-                min-width: 80px;
-                padding: 10px 10px;
-                font-size: 1rem;
-            }
+        .journal-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Exo 2', sans-serif;
+            line-height: 1.6;
+            backdrop-filter: blur(10px);
+            resize: vertical;
+            transition: all var(--transition-medium);
         }
-        
-        ::-webkit-scrollbar {
-            width: 8px;
+
+        .journal-textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(100, 181, 246, 0.3);
         }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+
+        .journal-textarea::placeholder {
+            color: var(--text-secondary);
         }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #ff4081, #64b5f6);
+
+        .char-counter {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
             border-radius: 10px;
         }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(45deg, #64b5f6, #1976d2);
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        /* Button Styles */
+        .btn {
+            position: relative;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Exo 2', sans-serif;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent-pink);
+            color: var(--text-primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 15px 40px rgba(255, 64, 129, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 64, 129, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        /* Success Message */
+        .success-message {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: var(--success);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideInDown 0.5s ease;
+        }
+
+        /* Journal Entries */
+        .entries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .entry-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow-light);
+            transition: all var(--transition-medium);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .entry-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            border-color: rgba(255, 64, 129, 0.3);
+        }
+
+        .entry-date {
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .entry-content {
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .entry-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .delete-btn {
+            background: rgba(244, 67, 54, 0.2);
+            color: var(--error);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition-medium);
+        }
+
+        .delete-btn:hover {
+            background: rgba(244, 67, 54, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--accent-pink);
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar { padding: 10px 20px; width: 98%; }
+            .nav-links { display: none; }
+            .container { margin-top: 100px; padding: 15px; }
+            .page-title { font-size: 2.5rem; }
+            .panel { padding: 25px; }
+            .form-actions { justify-content: center; }
+            .entries-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+
     <!-- Navigation -->
         <nav class="navbar">
             <div class="nav-container">
@@ -491,176 +617,354 @@
                 </div>
             </div>
         </nav>
-
+    <!-- Main Content -->
     <div class="container">
-        <div class="panel" id="journal-section-standalone">
-            <h2 class="panel-title"><i class="fas fa-book"></i> Daily Journal</h2>
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Daily Journal</h1>
+            <p class="page-subtitle">Capture your thoughts, feelings, and daily reflections</p>
+        </div>
 
-            <!-- New Journal Entry Form -->
-            <form method="post" class="journal-entry" id="journalForm">
-                {% csrf_token %}
-                <div class="journal-header">
-                    <div class="journal-date">New Entry for Today</div>
-                    <div class="journal-mood">
-                        <i class="fas fa-smile" style="color: var(--success);"></i>
-                        <span>How are you feeling?</span>
-                    </div>
-                </div>
-                
-                <!-- Writing Prompts -->
-                <div class="writing-prompts">
-                    <h4><i class="fas fa-lightbulb"></i> Need inspiration? Try these prompts:</h4>
-                    <div class="prompt-list">
-                        <span class="prompt-tag" onclick="insertPrompt('What made me smile today was...')">Daily Joy</span>
-                        <span class="prompt-tag" onclick="insertPrompt('I feel grateful for...')">Gratitude</span>
-                        <span class="prompt-tag" onclick="insertPrompt('Today I learned that...')">Learning</span>
-                        <span class="prompt-tag" onclick="insertPrompt('I am proud of myself for...')">Achievement</span>
-                        <span class="prompt-tag" onclick="insertPrompt('Tomorrow I want to...')">Goals</span>
-                    </div>
-                </div>
+        <!-- Success Message -->
+        <div id="successMessage" class="success-message" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <span>Your journal entry has been saved successfully!</span>
+        </div>
 
-                <div class="textbox-container">
-                    <label for="journalTextbox" class="textbox-label">
-                        <i class="fas fa-pen"></i> Write your thoughts...
+        <!-- New Entry Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <div class="title-icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <span>New Entry for Today</span>
+                </h2>
+            </div>
+
+            <form class="journal-form" onsubmit="saveJournalEntry(event)">
+                <div class="form-group">
+                    <label for="journal-content" class="form-label">
+                        How are you feeling?
                     </label>
-                    {{ form.content }}
-                    {% if form.content.help_text %}
-                        <small class="helptext" style="display: block; text-align: left; margin-top: 5px;">{{ form.content.help_text }}</small>
-                    {% endif %}
-                    {% for error in form.content.errors %}
-                        <p class="errorlist" style="color: var(--danger); text-align: left; margin-top: 5px;">{{ error }}</p>
-                    {% endfor %}
-                    <div class="char-counter">
-                        <span id="charCount">0</span> / 5000 characters
+
+                    <!-- Enhanced Inspiration Prompts -->
+                    <div class="prompt-section">
+                        <div class="prompt-header">
+                            <i class="fas fa-lightbulb"></i>
+                            Need inspiration? Try these prompts to get started:
+                        </div>
+                        <div class="prompt-tags">
+                            <span class="prompt-tag" data-text="Today brought me joy because...">✨ Daily Joy</span>
+                            <span class="prompt-tag" data-text="I am deeply grateful for...">🙏 Gratitude</span>
+                            <span class="prompt-tag" data-text="Today I learned something valuable:">📚 Learning</span>
+                            <span class="prompt-tag" data-text="I accomplished something meaningful today:">🎯 Achievement</span>
+                            <span class="prompt-tag" data-text="My intention for tomorrow is to...">🌟 Goals</span>
+                            <span class="prompt-tag" data-text="Right now I'm feeling... because...">💭 Emotions</span>
+                            <span class="prompt-tag" data-text="Something that challenged me today was...">💪 Growth</span>
+                            <span class="prompt-tag" data-text="A moment that made me smile today:">😊 Positivity</span>
+                            <span class="prompt-tag" data-text="I want to remember this day for...">📝 Memory</span>
+                            <span class="prompt-tag" data-text="If I could tell my past self something today, it would be...">🔮 Wisdom</span>
+                        </div>
+                    </div>
+
+                    <div class="textarea-container">
+                        <textarea 
+                            id="journal-content"
+                            name="content"
+                            class="journal-textarea"
+                            placeholder="Your thoughts matter. Take a moment to reflect on your day, express your feelings, or share what's on your mind. This is your safe space to be authentic and honest with yourself..."
+                            maxlength="5000"
+                            oninput="updateCharCount(this)"
+                            required
+                        ></textarea>
+                        <div class="char-counter" id="charCounter">
+                            <span id="currentCount">0</span> / 5000 characters
+                        </div>
                     </div>
                 </div>
 
-                <div class="controls">
-                    <button type="submit" class="btn" id="saveBtn">
-                        <i class="fas fa-save"></i> Save Entry
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                        <i class="fas fa-eraser"></i>
+                        Clear
                     </button>
-                    <button type="button" class="btn btn-secondary" onclick="clearTextbox()">
-                        <i class="fas fa-eraser"></i> Clear
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Entry
                     </button>
-                    
                 </div>
             </form>
+        </div>
 
-            <h3 class="journal-recent-title">
-                <i class="fas fa-history"></i> Recent Entries
-            </h3>
+        <!-- Recent Entries Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <div class="title-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <span>Recent Entries</span>
+                </h2>
+            </div>
 
-            {% for entry in journal_entries %}
-            <div class="journal-entry">
-                <div class="journal-header">
-                    <div class="journal-date">{{ entry.created_at|date:"F j, Y, P" }}</div>
-                    <!-- If you add mood to your JournalEntry model, display it here -->
-                    <!-- <div class="journal-mood">Mood: {{ entry.mood|default:"N/A" }}</div> -->
+            <div id="entries-container">
+                <div id="entries-grid" class="entries-grid">
+                    <!-- Journal entries will be dynamically added here -->
                 </div>
-                <div class="journal-content">
-                    <p>{{ entry.content|linebreaksbr }}</p>
+                
+                <div id="empty-state" class="empty-state">
+                    <i class="fas fa-book-open"></i>
+                    <h3>No journal entries found</h3>
+                    <p>Write your first entry above to get started on your journaling journey! Every thought matters, and every feeling is valid. 💚</p>
                 </div>
             </div>
-            {% empty %}
-            <p>No journal entries found. Write your first entry above!</p>
-            {% endfor %}
         </div>
     </div>
 
-    <footer>
-        <p>Emoticon Project &copy; 2025 | AI Emotional Companion for Mental Wellness</p>
-        <p>Made with ❤️ </p>
-    </footer>
-
     <script>
-        // Character counter functionality
-        function updateCharCounter() {
-            const textbox = document.getElementById('journalTextbox');
-            const counter = document.getElementById('charCount');
-            const currentLength = textbox.value.length;
-            counter.textContent = currentLength;
+        // Enhanced inspiration texts with encouraging prompts
+        const inspirationTexts = {
+            "✨ Daily Joy": "Today brought me joy because...",
+            "🙏 Gratitude": "I am deeply grateful for...",
+            "📚 Learning": "Today I learned something valuable:",
+            "🎯 Achievement": "I accomplished something meaningful today:",
+            "🌟 Goals": "My intention for tomorrow is to...",
+            "💭 Emotions": "Right now I'm feeling... because...",
+            "💪 Growth": "Something that challenged me today was...",
+            "😊 Positivity": "A moment that made me smile today:",
+            "📝 Memory": "I want to remember this day for...",
+            "🔮 Wisdom": "If I could tell my past self something today, it would be..."
+        };
+
+        // Journal entries storage key
+        const JOURNAL_ENTRIES_KEY = 'emoticon_journal_entries';
+
+        // Load journal entries from localStorage
+        function loadJournalEntries() {
+            const entries = localStorage.getItem(JOURNAL_ENTRIES_KEY);
+            return entries ? JSON.parse(entries) : [];
+        }
+
+        // Save journal entries to localStorage
+        function saveJournalEntries(entries) {
+            localStorage.setItem(JOURNAL_ENTRIES_KEY, JSON.stringify(entries));
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true
+            };
+            return new Date(date).toLocaleDateString('en-US', options);
+        }
+
+        // Generate unique ID for entries
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Display journal entries
+        function displayJournalEntries() {
+            const entries = loadJournalEntries();
+            const entriesGrid = document.getElementById('entries-grid');
+            const emptyState = document.getElementById('empty-state');
+
+            if (entries.length === 0) {
+                entriesGrid.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
             
-            // Change color based on character count
-            if (currentLength > 4500) {
-                counter.style.color = 'var(--danger)';
-            } else if (currentLength > 3500) {
-                counter.style.color = 'var(--warning)';
-            } else {
-                counter.style.color = 'var(--gray)';
+            // Sort entries by date (newest first)
+            entries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            entriesGrid.innerHTML = entries.map(entry => `
+                <div class="entry-card" data-id="${entry.id}">
+                    <div class="entry-date">
+                        <i class="fas fa-calendar"></i>
+                        ${formatDate(entry.createdAt)}
+                    </div>
+                    <div class="entry-content">${entry.content}</div>
+                    <div class="entry-actions">
+                        <button class="delete-btn" onclick="deleteJournalEntry('${entry.id}')">
+                            <i class="fas fa-trash"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Save journal entry
+        function saveJournalEntry(event) {
+            event.preventDefault();
+            
+            const content = document.getElementById('journal-content').value.trim();
+            
+            if (!content) {
+                alert('Please write something before saving! Your thoughts and feelings matter. 💙');
+                return;
+            }
+
+            const entry = {
+                id: generateId(),
+                content: content,
+                createdAt: new Date().toISOString()
+            };
+
+            const entries = loadJournalEntries();
+            entries.unshift(entry); // Add to beginning of array (newest first)
+            saveJournalEntries(entries);
+
+            // Clear the form
+            document.getElementById('journal-content').value = '';
+            updateCharCount(document.getElementById('journal-content'));
+
+            // Show success message
+            showSuccessMessage();
+
+            // Refresh entries display
+            displayJournalEntries();
+
+            // Clear draft
+            localStorage.removeItem('journal_draft');
+        }
+
+        // Delete journal entry
+        function deleteJournalEntry(entryId) {
+            if (confirm('Are you sure you want to delete this journal entry? This action cannot be undone.')) {
+                const entries = loadJournalEntries();
+                const updatedEntries = entries.filter(entry => entry.id !== entryId);
+                saveJournalEntries(updatedEntries);
+                
+                // Add deletion animation
+                const entryCard = document.querySelector(`[data-id="${entryId}"]`);
+                if (entryCard) {
+                    entryCard.style.opacity = '0';
+                    entryCard.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        displayJournalEntries();
+                    }, 300);
+                }
             }
         }
 
-        // Clear textbox function
-        function clearTextbox() {
-            if (confirm('Are you sure you want to clear all text?')) {
-                document.getElementById('journalTextbox').value = '';
-                updateCharCounter();
-            }
-        }
-
-        // Insert writing prompt
-        function insertPrompt(prompt) {
-            const textbox = document.getElementById('journalTextbox');
-            const currentText = textbox.value;
-            
-            if (currentText.length === 0) {
-                textbox.value = prompt + ' ';
-            } else {
-                textbox.value = currentText + '\n\n' + prompt + ' ';
-            }
-            
-            textbox.focus();
-            updateCharCounter();
-        }
-
-        // Save draft functionality (using in-memory storage)
-        let savedDraft = '';
-        
-        function saveDraft() {
-            const textbox = document.getElementById('journalTextbox');
-            savedDraft = textbox.value;
-            
-            // Show feedback
-            const saveBtn = document.querySelector('button[onclick="saveDraft()"]');
-            const originalText = saveBtn.innerHTML;
-            saveBtn.innerHTML = '<i class="fas fa-check"></i> Draft Saved!';
-            saveBtn.style.background = 'var(--success)';
+        // Show success message
+        function showSuccessMessage() {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'flex';
             
             setTimeout(() => {
-                saveBtn.innerHTML = originalText;
-                saveBtn.style.background = '';
-            }, 2000);
+                successMessage.style.opacity = '0';
+                successMessage.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    successMessage.style.opacity = '1';
+                    successMessage.style.transform = 'translateY(0)';
+                }, 300);
+            }, 4000);
         }
 
-        // Load draft function (can be called when needed)
-        function loadDraft() {
-            if (savedDraft) {
-                document.getElementById('journalTextbox').value = savedDraft;
-                updateCharCounter();
+        // Character counter functionality
+        function updateCharCount(textarea) {
+            const currentLength = textarea.value.length;
+            const maxLength = 5000;
+            const counter = document.getElementById('currentCount');
+            
+            if (counter) {
+                counter.textContent = currentLength;
+                
+                // Change color based on character count
+                const charCounter = document.getElementById('charCounter');
+                if (currentLength > maxLength * 0.9) {
+                    charCounter.style.color = '#f44336'; // Red when near limit
+                } else if (currentLength > maxLength * 0.7) {
+                    charCounter.style.color = '#ffc107'; // Yellow when getting close
+                } else {
+                    charCounter.style.color = 'rgba(255, 255, 255, 0.8)'; // Default
+                }
             }
         }
 
-        // Auto-save draft every 30 seconds
-        setInterval(() => {
-            const textbox = document.getElementById('journalTextbox');
-            if (textbox.value.length > 0) {
-                savedDraft = textbox.value;
+        // Enhanced insert prompt functionality
+        function insertPrompt(promptText) {
+            const textarea = document.getElementById('journal-content');
+            const currentValue = textarea.value.trim();
+            
+            if (currentValue === '') {
+                textarea.value = promptText + ' ';
+            } else {
+                textarea.value = currentValue + '\n\n' + promptText + ' ';
             }
-        }, 30000);
+            
+            updateCharCount(textarea);
+            textarea.focus();
+            
+            // Move cursor to end
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
 
-        // Form submission handling
-        document.getElementById('journalForm').addEventListener('submit', function(e) {
-            const textbox = document.getElementById('journalTextbox');
-            if (textbox.value.trim().length === 0) {
-                e.preventDefault();
-                alert('Please write something before saving your journal entry.');
-                textbox.focus();
+        // Clear form functionality
+        function clearForm() {
+            if (confirm('Are you sure you want to clear your entry? Your thoughts are valuable!')) {
+                const textarea = document.getElementById('journal-content');
+                textarea.value = '';
+                updateCharCount(textarea);
+                textarea.focus();
+                localStorage.removeItem('journal_draft');
             }
-        });
+        }
 
-        // Initialize character counter on page load
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            updateCharCounter();
+            const textarea = document.getElementById('journal-content');
+            
+            // Set up character counter
+            updateCharCount(textarea);
+            
+            // Load draft from localStorage
+            const draft = localStorage.getItem('journal_draft');
+            if (draft && textarea.value.trim() === '') {
+                textarea.value = draft;
+                updateCharCount(textarea);
+            }
+            
+            // Auto-save functionality
+            let autoSaveTimeout;
+            textarea.addEventListener('input', function() {
+                updateCharCount(this);
+                
+                clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(() => {
+                    localStorage.setItem('journal_draft', textarea.value);
+                }, 2000);
+            });
+
+            // Enhanced prompt tag functionality
+            document.querySelectorAll('.prompt-tag').forEach(button => {
+                button.addEventListener('click', function() {
+                    const promptKey = this.textContent.trim();
+                    const promptText = inspirationTexts[promptKey] || this.getAttribute('data-text');
+                    insertPrompt(promptText);
+                    
+                    // Add visual feedback
+                    this.style.transform = 'translateY(-1px) scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // Load and display existing journal entries
+            displayJournalEntries();
         });
     </script>
 </body>
