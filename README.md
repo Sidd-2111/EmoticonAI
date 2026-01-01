@@ -284,8 +284,8 @@ This project is licensed under the MIT License.
 
 ## 👥 Authors
 
-- **Sidd-2111** - *Initial work*
-- **YASH-DHADGE** - *Contributor*
+- **Sidd-2111** 
+- **YASH-DHADGE** 
 
 ## 🙏 Acknowledgments
 
